@@ -1,0 +1,25 @@
+apply plugin : "java"
+
+task hello << {
+	println 'Hello world!'
+}
+
+task intro(dependsOn: hello) << {
+	println "I'm Gradle"
+}
+
+task upper << {
+    String someString = 'mY_nAmE'
+    println "Original: " + someString
+    println "Upper case: " + someString.toUpperCase()
+}
+
+println 'temp gradle'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile "joda-time:joda-time:2.2"
+}
