@@ -26,19 +26,6 @@ import java.io.FileInputStream;
 public class DemoPlugin implements Plugin<Project> {
     @Override
     public void apply(Project project) {
-    	/*/
-    	try {
-	    	// File location it
-	        String buildLocation = "build/classes/main/hello/";
-	        File location = new File(buildLocation + "TestJava");
-	        new Transformer().doTransform(
-	        	buildLocation + "TestJava"+".class", 
-	        	new FileInputStream(buildLocation + "TestJava" + ".class")
-	        	);
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    	}
-    	/*/
 
         Set<Project> allProject = project.getAllprojects();
         System.out.println("All Project: "+allProject.toString());
