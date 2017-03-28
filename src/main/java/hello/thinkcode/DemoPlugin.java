@@ -29,7 +29,8 @@ public class DemoPlugin implements Plugin<Project> {
 
         Set<Project> allProject = project.getAllprojects();
         System.out.println("All Project: "+allProject.toString());
-
+        compileDeps = project.getConfigurations().getByName("compile").getDependencies();
+        compileDeps.add(project.getDependencies().create("com.lantern.lantern:app-debug:0.1.13@aar"));
         project.afterEvaluate(new Action<Project>() {
             @Override
             public void execute(Project project) {
