@@ -10,6 +10,16 @@ buildscript {
 		classpath 'hello.thinkcode.gradle:demoPlugin:1.0.0-SNAPSHOT'
 	}
 }
+
+repositories {
+	flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+	compile project(path: ':lantern')
+}
 /*/
 group = 'hello.thinkcode.gradle'
 version = '1.0.0-SNAPSHOT'
@@ -25,9 +35,13 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile group: 'org.ow2.asm', name: 'asm', version: '4.2'
     compile group: 'org.ow2.asm', name: 'asm-commons', version: '4.2'
+    //compile 'com.lantern.lantern:app-debug:0.1.13@aar'
 }
 
 repositories {
+	flatDir {
+        dirs 'libs'
+    }
     mavenCentral()
     mavenLocal()
 }
