@@ -27,11 +27,15 @@ public class Transformer {
 						System.out.println("Name: "+name+", "+desc + ", "+signature+", "+access);
 						MethodVisitor mv = super.visitMethod(access, name, desc, signature, exceptions); 
 
-						if ("onCreate".equals(name)) {
-
-							return new TransformerAdapter(access, name, desc, mv); 
-						} else {
-							return mv;
+						switch (name) {
+							case "onCreate":
+								return new TransformerAdapter(access, name, desc, mv); 
+							case "onStart":
+								return new TransformerAdapter(access, name, desc, mv); 
+							case "onResume":
+								return new TransformerAdapter(access, name, desc, mv); 
+							default:
+								return mv;
 						}
 					}
 

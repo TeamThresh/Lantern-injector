@@ -40,8 +40,9 @@ public class DemoPlugin implements Plugin<Project> {
 
         Set<Project> allProject = project.getAllprojects();
         System.out.println("All Project: "+allProject.toString());
+        // 실시간 의존성 추가
         compileDeps = project.getConfigurations().getByName("compile").getDependencies();
-        compileDeps.add(project.getDependencies().create("com.lantern.lantern:app-debug:0.1.13@aar"));
+        //compileDeps.add(project.getDependencies().create("com.lantern.lantern:app-debug:0.1.13@aar"));
         project.afterEvaluate(new Action<Project>() {
             @Override
             public void execute(Project project) {
@@ -49,10 +50,10 @@ public class DemoPlugin implements Plugin<Project> {
                 TaskContainer tc = project.getTasks();
         		System.out.println("Task Container: "+tc.toString());
                 
-		        //Task complieTask = tc.getByPath(":app:compileDebugSources");
-		        Task complieTask = tc.getByPath(":app:mockableAndroidJar");
+		        Task complieTask = tc.getByPath(":app:compileDebugJavaWithJavac");
+		        //Task complieTask = tc.getByPath(":app:lint");
 		        System.out.println("Task Name: "+complieTask.getName() + ", Task Desc: "+complieTask.getDescription());
-		        complieTask.doFirst(new Action<Task>() {
+		        complieTask.doLast(new Action<Task>() {
 		        	@Override
 		        	public void execute(Task task) {
 		        		System.out.println("Task Name: "+task.getName() + ", Task Desc: "+task.getDescription());
@@ -65,6 +66,8 @@ public class DemoPlugin implements Plugin<Project> {
 				            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 				            Document doc = dBuilder.parse(fXmlFile);
 				            doc.getDocumentElement().normalize();
+				            String packageName = doc.getDocumentElement().getAttribute("package");
+				            packageName = packageName.replace(".", "/");
 
 				            // Search Element name that have 'activity' in 'application' 
 				            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
@@ -89,13 +92,14 @@ public class DemoPlugin implements Plugin<Project> {
 
 					                    // File location it
 					                    String buildLocation = "app/build/intermediates/classes/debug/";
+					                    /*
 					                    // TODO 해당 앱의 패키지로 변경할것
 					                    File location = new File(buildLocation + "com/example/bigasslayout/bigasslayout");
 					                    if (location.isDirectory()) {
 					                    	for (String tmp : location.list()) {
 												System.out.println(tmp);
 											}
-										}
+										}*/
 
 					                    System.out.println("Bulid Location : " + buildLocation + activityName);
 					                    new Transformer().doTransform(
