@@ -1,22 +1,39 @@
 package hello.asm;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.commons.AdviceAdapter;
+import org.objectweb.asm.*; 
 
-public class OverrideAdapter extends MethodVisitor { 
-	String name;
-	protected OverrideAdapter(int access, String name, String desc, MethodVisitor mv) { 
-		super(Opcodes.ASM4, mv);
-		this.name = name;
-// TODO 모르겠다 아 짜증나 그냥 직접 구현할래
-		onMethodTop();
-		onMethodMiddle();
-		onMethodBottom();
-	} 
+public class OverrideAdapter extends ClassVisitor {
 
-	protected void onMethodTop() {
+	public OverrideAdapter(ClassVisitor cv) {
+		super(Opcodes.ASM4, cv);
+	}
+
+	@Override
+	public void visit(int version, int access, String name,
+		String signature, String superName, String[] interfaces) {
+		cv.visit(version, access, name, signature, superName, interfaces);
+	}
+
+	@Override 
+	public MethodVisitor visitMethod(int access, String name, 
+			String desc, String signature, String[] exceptions) { 
+		System.out.println("Name: "+name+", "+desc + ", "+signature+", "+access);
+		MethodVisitor mv = cv.visitMethod(access, name, desc, signature, exceptions); 
+
+		String fieldName = "";
+		switch (name) {
+			case "onCreate":
+				fieldName = "CREATED";
+				break;
+			case "onStart":
+				fieldName = "STARTED";
+				break;
+			case "onResume":
+				fieldName = "RESUMED";
+				break;
+		}
+mv.visitCode();
+		// TOP
 		mv.visitMethodInsn(
 				Opcodes.INVOKESTATIC, 
 				"com/lantern/lantern/RYLA", 
@@ -28,25 +45,27 @@ public class OverrideAdapter extends MethodVisitor {
 				"com/lantern/lantern/RYLA", 
 				"setActivityContext", 
 				"(Landroid/content/Context;)Lcom/lantern/lantern/RYLA;"); 
-		mv.visitLdcInsn(this.name);
+		mv.visitFieldInsn(
+				Opcodes.GETSTATIC, 
+				"com/lantern/lantern/dump/ActivityRenderData", 
+				fieldName, 
+				"Ljava/lang/String;"); 
+		//mv.visitLdcInsn(this.name);
 		mv.visitMethodInsn(
 				Opcodes.INVOKEVIRTUAL, 
 				"com/lantern/lantern/RYLA", 
 				"startRender", 
 				"(Ljava/lang/String;)V"); 
-	}
 
-	protected void onMethodMiddle() {
-		// super.onLife();
+		// MIDDLE
 		mv.visitVarInsn(Opcodes.ALOAD, 0);
 		mv.visitMethodInsn(
 				Opcodes.INVOKESPECIAL, 
 				"android/support/v7/app/AppCompatActivity", 
-				this.name, 
+				name, 
 				"()V");
-	}
 
-	protected void onMethodBottom() {
+		// BOTTOM
 		mv.visitMethodInsn(
 				Opcodes.INVOKESTATIC, 
 				"com/lantern/lantern/RYLA", 
@@ -58,11 +77,21 @@ public class OverrideAdapter extends MethodVisitor {
 				"com/lantern/lantern/RYLA", 
 				"setActivityContext", 
 				"(Landroid/content/Context;)Lcom/lantern/lantern/RYLA;"); 
-		mv.visitLdcInsn(this.name);
+		mv.visitFieldInsn(
+				Opcodes.GETSTATIC, 
+				"com/lantern/lantern/dump/ActivityRenderData",
+				fieldName, 
+				"Ljava/lang/String;"); 
+		//mv.visitLdcInsn(this.name);
 		mv.visitMethodInsn(
 				Opcodes.INVOKEVIRTUAL, 
 				"com/lantern/lantern/RYLA", 
 				"endRender", 
 				"(Ljava/lang/String;)V"); 
+		return mv;
+	}
+
+	@Override
+	public void visitEnd() {
 	}
 }
