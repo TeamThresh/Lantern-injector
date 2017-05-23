@@ -42,7 +42,7 @@ public class DemoPlugin implements Plugin<Project> {
         System.out.println("All Project: "+allProject.toString());
         // 실시간 의존성 추가
         compileDeps = project.getConfigurations().getByName("compile").getDependencies();
-        compileDeps.add(project.getDependencies().create("com.lantern:lantern-sdk:0.1.8"));
+        compileDeps.add(project.getDependencies().create("com.lantern:lantern-sdk:0.1.33"));
         //compileDeps.add(project.getDependencies().create("com.lantern.lantern:app-debug:0.1.13@aar"));
         project.afterEvaluate(new Action<Project>() {
             @Override

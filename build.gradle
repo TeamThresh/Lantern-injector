@@ -28,7 +28,7 @@ publish {
     userOrg = 'lantern-thresh'
     groupId = 'com.lantern'
     artifactId = 'lantern-injector'
-    publishVersion = '0.1.8'
+    publishVersion = '0.1.33'
     desc = 'injector for lantern-sdk'
 }
 group = 'hello.thinkcode.gradle'
