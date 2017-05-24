@@ -7,6 +7,7 @@ import java.util.Set;
 
 public class TransformClassVisitor extends ClassVisitor {
 	HashMap<String, Boolean> lifeCycle = new HashMap<>(); // onCreate, onStart, onResume
+	String superClass = "";
 
 	public TransformClassVisitor(ClassVisitor cv) {
 		super(Opcodes.ASM4, cv);
@@ -19,6 +20,8 @@ public class TransformClassVisitor extends ClassVisitor {
 	public void visit(int version, int access, String name,
 		String signature, String superName, String[] interfaces) {
 		cv.visit(Opcodes.V1_5, access, name, signature, superName, interfaces);
+		superClass = superName;
+		System.out.println("super class name : " + superClass + "\n");
 	}
 
 	@Override 
@@ -110,7 +113,8 @@ public class TransformClassVisitor extends ClassVisitor {
 		mv.visitVarInsn(Opcodes.ALOAD, 0);
 		mv.visitMethodInsn(
 				Opcodes.INVOKESPECIAL, 
-				"android/support/v7/app/AppCompatActivity", 
+				superClass,
+				//"android/support/v7/app/AppCompatActivity", 
 				name, 
 				"()V");
 	}
