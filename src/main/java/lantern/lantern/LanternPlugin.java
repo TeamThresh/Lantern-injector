@@ -70,7 +70,8 @@ public class LanternPlugin implements Plugin<Project> {
 		        while(it.hasNext()) {
 		        	// Processing when Release Task existing in compile tasks
 		        	Task compileTask = it.next();
-		            if (compileTask.getPath().equals(":app:compileReleaseJavaWithJavac")) {
+		            //if (compileTask.getPath().equals(":app:compileReleaseJavaWithJavac")) {
+		        	if (compileTask.getPath().equals(":app:compileDebugJavaWithJavac")) {
 		            	//Task complieTask = tc.getByPath(":app:lint");
 				        System.out.println("Task Name: "+compileTask.getName() + ", Task Desc: "+compileTask.getDescription());
 				        compileTask.doLast(new Action<Task>() {
@@ -79,8 +80,8 @@ public class LanternPlugin implements Plugin<Project> {
 				        		System.out.println("Task Name: "+task.getName() + ", Task Desc: "+task.getDescription());
 								
 				        		// Get Activity List on Manifest.xml
-				                //String fileName = "app/build/intermediates/manifests/full/debug/AndroidManifest.xml";
-				                String fileName = "app/build/intermediates/manifests/full/release/AndroidManifest.xml";
+				                String fileName = "app/build/intermediates/manifests/full/debug/AndroidManifest.xml";
+				                //String fileName = "app/build/intermediates/manifests/full/release/AndroidManifest.xml";
 						        try {
 						            File fXmlFile = new File(fileName);
 						            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -112,7 +113,8 @@ public class LanternPlugin implements Plugin<Project> {
 							                    System.out.println("--- do transform ---");
 
 							                    // File location it
-							                    String buildLocation = "app/build/intermediates/classes/release/";
+							                    //String buildLocation = "app/build/intermediates/classes/release/";
+							                    String buildLocation = "app/build/intermediates/classes/debug/";
 							                    /*
 							                    // TODO 해당 앱의 패키지로 변경할것
 							                    File location = new File(buildLocation + "com/example/bigasslayout/bigasslayout");

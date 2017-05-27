@@ -30,7 +30,7 @@ publish {
     userOrg = 'lantern-thresh'
     groupId = 'com.lantern'
     artifactId = 'lantern-injector'
-    publishVersion = '0.1.34'
+    publishVersion = '0.1.38'
     desc = 'injector for lantern-sdk'
 }
 
