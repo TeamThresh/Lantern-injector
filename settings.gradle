@@ -1,1 +1,2 @@
-rootProject.name = 'demoPlugin'
+// 생성되는 파일이름
+rootProject.name = 'lanternPlugin'

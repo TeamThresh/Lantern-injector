@@ -24,6 +24,8 @@ dependencies {
 apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'com.novoda.bintray-release'
+
+// 업로드용
 publish {
     userOrg = 'lantern-thresh'
     groupId = 'com.lantern'
@@ -31,8 +33,10 @@ publish {
     publishVersion = '0.1.34'
     desc = 'injector for lantern-sdk'
 }
-group = 'hello.thinkcode.gradle'
-version = '1.0.0-SNAPSHOT'
+
+// 생성되는 파일 이름
+group = 'com.lantern'
+version = '0.1.34'
 buildscript {
     repositories {
         jcenter()

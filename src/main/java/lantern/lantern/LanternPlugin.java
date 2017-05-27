@@ -32,7 +32,7 @@ import java.util.Iterator;
 import java.io.FileInputStream;
 import java.lang.NullPointerException;
 
-public class DemoPlugin implements Plugin<Project> {
+public class LanternPlugin implements Plugin<Project> {
 	public static final String CONF_LANTERN_SDK = "lantern";
 	DependencySet compileDeps;
 	private final String SDK_INFO_FOR_DEPENDENCY = "com.lantern:lantern-sdk:0.1.34";
@@ -142,7 +142,7 @@ public class DemoPlugin implements Plugin<Project> {
 
         //*/
 
-        System.out.println("DemoPlugin Applied");
+        System.out.println("LanternPlugin Applied");
 
     }
 
