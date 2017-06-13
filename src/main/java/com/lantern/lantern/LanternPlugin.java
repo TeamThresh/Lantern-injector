@@ -1,4 +1,4 @@
-package hello.thinkcode;
+package com.lantern.lantern;
 
 import org.gradle.api.Action;
 import org.gradle.api.Plugin;
@@ -18,7 +18,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import hello.asm.Transformer;
+import com.lantern.asm.Transformer;
 
 import java.io.File;
 
@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Iterator;
 import java.io.FileInputStream;
 import java.lang.NullPointerException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LanternPlugin implements Plugin<Project> {
 	public static final String CONF_LANTERN_SDK = "lantern";
@@ -64,24 +66,43 @@ public class LanternPlugin implements Plugin<Project> {
             public void execute(Project project) {
                 System.out.println("After Evaluate!!!");
                 TaskContainer tc = project.getTasks();
-        		System.out.println("Task Container: "+tc.toString());
+        		//System.out.println("Task Container: "+tc.toString());
 
 			    Iterator<Task> it = tc.iterator();
 		        while(it.hasNext()) {
 		        	// Processing when Release Task existing in compile tasks
 		        	Task compileTask = it.next();
-		            if (compileTask.getPath().equals(":app:compileReleaseJavaWithJavac")) {
-		        	//if (compileTask.getPath().equals(":app:compileDebugJavaWithJavac")) {
+
+	            	Pattern flavorPattern = Pattern.compile(":app:compile(\\w+)(Release|Debug)JavaWithJavac");
+	        		Matcher flavorMatcher = flavorPattern.matcher( compileTask.toString() );
+	        		if( flavorMatcher.find() ) {
+		        		//if (compileTask.getPath().equals(":app:compileDebugJavaWithJavac")) {
 		            	//Task complieTask = tc.getByPath(":app:lint");
 				        System.out.println("Task Name: "+compileTask.getName() + ", Task Desc: "+compileTask.getDescription());
 				        compileTask.doLast(new Action<Task>() {
 				        	@Override
 				        	public void execute(Task task) {
 				        		System.out.println("Task Name: "+task.getName() + ", Task Desc: "+task.getDescription());
-								
+
+				        		String flavor = "";
+				        		String buildType = "";
+								Pattern flavorPattern = Pattern.compile(":app:compile(\\w+)(Release|Debug)JavaWithJavac");
+				        		Matcher flavorMatcher = flavorPattern.matcher( task.toString() );
+				        		if( flavorMatcher.find() ) {
+				        			flavor = flavorMatcher.group(1).toLowerCase();
+				        			Pattern bulidTypePattern = Pattern.compile(":app:compile"+flavorMatcher.group(1)+"(\\w+)JavaWithJavac");
+				        			Matcher buildTypeMatcher = bulidTypePattern.matcher(task.toString());
+				        			if (buildTypeMatcher.find())
+				        				buildType = buildTypeMatcher.group(1).toLowerCase();
+				        		}
 				        		// Get Activity List on Manifest.xml
 				                //String fileName = "app/build/intermediates/manifests/full/debug/AndroidManifest.xml";
-				                String fileName = "app/build/intermediates/manifests/full/release/AndroidManifest.xml";
+				                String fileName = "app/build/intermediates/manifests/full/";
+				                if (!flavor.equals("")) {
+				                	fileName += flavor+"/";
+				                }
+				                fileName += buildType+"/AndroidManifest.xml";
+
 						        try {
 						            File fXmlFile = new File(fileName);
 						            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -113,7 +134,11 @@ public class LanternPlugin implements Plugin<Project> {
 							                    System.out.println("--- do transform ---");
 
 							                    // File location it
-							                    String buildLocation = "app/build/intermediates/classes/release/";
+							                    String buildLocation = "app/build/intermediates/classes/";
+							                    if (!flavor.equals("")) {
+								                	buildLocation += flavor+"/";
+								                }
+								                buildLocation += buildType+"/";
 							                    //String buildLocation = "app/build/intermediates/classes/debug/";
 							                    /*
 							                    // TODO 해당 앱의 패키지로 변경할것

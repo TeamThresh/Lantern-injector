@@ -1,4 +1,4 @@
-package hello.asm;
+package com.lantern.asm;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Label;

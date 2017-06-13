@@ -1,4 +1,4 @@
-package hello.asm;
+package com.lantern.asm;
 
 import java.io.FileOutputStream;
 import java.io.InputStream;
