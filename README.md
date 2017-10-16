@@ -15,7 +15,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.lantern:lantern-injector:0.1.65'
+        classpath 'com.lantern:lantern-injector:0.1.66'
     }
 }
 
