@@ -30,13 +30,13 @@ publish {
     userOrg = 'lantern-thresh'
     groupId = 'com.lantern'
     artifactId = 'lantern-injector'
-    publishVersion = '0.1.66'
+    publishVersion = '0.1.67'
     desc = 'injector for lantern-sdk'
 }
 
 // 생성되는 파일 이름
 group = 'com.lantern'
-version = '0.1.66'
+version = '0.1.67'
 buildscript {
     repositories {
         jcenter()

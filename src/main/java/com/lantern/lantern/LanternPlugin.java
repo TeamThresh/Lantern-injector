@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
 public class LanternPlugin implements Plugin<Project> {
 	public static final String CONF_LANTERN_SDK = "lantern";
 	DependencySet compileDeps;
-	private final String SDK_INFO_FOR_DEPENDENCY = "com.lantern:lantern-sdk:0.1.66";
+	private final String SDK_INFO_FOR_DEPENDENCY = "com.lantern:lantern-sdk:0.1.67";
 
     @Override
     public void apply(Project project) {
